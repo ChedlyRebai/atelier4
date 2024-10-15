@@ -43,6 +43,7 @@ class BookController extends AbstractController
             //$book->setPublicationDate($request->request->get('published_date'));
             $book->setEnabled($request->request->get('enabled'));
             $author = $entitymanager->getRepository(Author::class)->find($request->request->get('author'));
+            $author->setNbBooks($author->getNbBooks() + 1);
             $book->setAuthor($author);
 
             
@@ -71,6 +72,13 @@ class BookController extends AbstractController
     #[Route('/{id}',name:'book_delete',methods:['POST'])]
     public function delete(Request $request,Book $book,EntityManagerInterface $entitymanager):Response {
         if($this->isCsrfTokenValid('delete'.$book->getId(),$request->request->get('_token'))){
+
+
+            $author = $book->getAuthor();
+            $author->setNbBooks($author->getNbBooks() - 1);
+
+         
+
             $entitymanager->remove($book);
             $entitymanager->flush();
         }
