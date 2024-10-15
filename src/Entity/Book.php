@@ -22,6 +22,9 @@ class Book
     #[ORM\Column(length: 255)]
     private ?string $enabled = null;
 
+    #[ORM\ManyToOne(inversedBy: 'books')]
+    private ?Author $author = null; 
+
     public function getId(): ?int
     {
         return $this->id;
@@ -61,4 +64,46 @@ class Book
 
         return $this;
     }
+
+    public function getAuthor(): ?Author
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?Author $author): static
+    {
+        $this->author = $author;
+
+        return $this;
+    }
+    /**
+     * @return Collection|Book[]
+     */
+    public function getBooks(): Collection
+    {
+        return $this->books;
+    }
+
+    public function addBook(Book $book): static
+{
+    if (!$this->books->contains($book)) {
+        $this->books->add($book);
+        $book->setAuthor($this);
+    }
+
+    return $this;
+}
+
+public function removeBook(Book $book): static
+{
+    if ($this->books->removeElement($book)) {
+        // set the owning side to null (unless already changed)
+        if ($book->getAuthor() === $this) {
+            $book->setAuthor(null);
+        }
+    }
+
+    return $this;
+}
+
 }
