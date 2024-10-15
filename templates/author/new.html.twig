@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Create new Author{% endblock %}
+
+{% block body %}
+    <h1>Create new Author</h1>
+
+    <form method="post">
+        <div>
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" required>
+        </div>
+        <div>
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <button type="submit">Save</button>
+    </form>
+
+    <a href="{{ path('author_index') }}">Back to list</a>
+{% endblock %}

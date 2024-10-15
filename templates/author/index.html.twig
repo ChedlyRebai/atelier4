@@ -1,20 +1,37 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello AuthorController!{% endblock %}
+{% block title %}Author index{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <h1>Author index</h1>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for author in authors %}
+            <tr>
+                <td>{{ author.id }}</td>
+                <td>{{ author.username }}</td>
+                <td>{{ author.email }}</td>
+                <td>
+                    <a href="{{ path('author_show', {'id': author.id}) }}">show</a>
+                    <a href="{{ path('author_edit', {'id': author.id}) }}">edit</a>
+                    <form method="post" action="{{ path('author_delete', {'id': author.id}) }}" style="display:inline-block;">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ author.id) }}">
+                        <button class="btn btn-danger">delete</button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>/home/msi/Bureau/github/symfony/atelier4/src/Controller/AuthorController.php</code></li>
-        <li>Your template at <code>/home/msi/Bureau/github/symfony/atelier4/templates/author/index.html.twig</code></li>
-    </ul>
-</div>
+    <a href="{{ path('author_new') }}">Create new</a>
 {% endblock %}

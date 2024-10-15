@@ -2,40 +2,72 @@
 
 namespace App\Controller;
 
+use App\Entity\Author;
+use App\Form\AuthorType;
+use App\Repository\AuthorRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Annotation\Route;
 
+#[Route('/author')]
 class AuthorController extends AbstractController
 {
-    #[Route('/author', name: 'app_author')]
-    public function index(): Response
+    #[Route('/', name: 'author_index', methods: ['GET'])]
+    public function index(AuthorRepository $authorRepository): Response
     {
         return $this->render('author/index.html.twig', [
-            'controller_name' => 'AuthorController',
+            'authors' => $authorRepository->findAll(),
         ]);
     }
 
-    #[Route('/author/new' ,name: 'app_author_new')]
-    public function new(): Response
+    #[Route('/new', name: 'author_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
-        return $this->render('author/new.html.twig', [
-            'controller_name' => 'AuthorController',
-        ]);
-        
+        if ($request->isMethod('POST')) {
+            $author = new Author();
+            $author->setUsername($request->request->get('username'));
+            $author->setEmail($request->request->get('email'));
+    
+            $entityManager->persist($author);
+            $entityManager->flush();
+    
+            return $this->redirectToRoute('author_index');
+        }
+    
+        return $this->render('author/new.html.twig');
     }
-
-    #[Route('/author/edit/{id}', name: 'app_author_edit')]
-    public function edit($id):Response{
+    
+    #[Route('/{id}/edit', name: 'author_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, Author $author, EntityManagerInterface $entityManager): Response
+    {
+        if ($request->isMethod('POST')) {
+            $author->setUsername($request->request->get('username'));
+            $author->setEmail($request->request->get('email'));
+    
+            $entityManager->flush();
+    
+            return $this->redirectToRoute('author_index');
+        }
+    
         return $this->render('author/edit.html.twig', [
-            'controller_name' => 'AuthorController',
+            'author' => $author,
         ]);
     }
     
-    #[Route('/author/delete/{id}', name: 'app_author_delete')]
-    public function delete($id):Response{
-        return $this->render('author/delete.html.twig', [
-            'controller_name' => 'AuthorController',
-        ]);
+    #[Route('/{id}', name: 'author_delete', methods: ['POST'])]
+    public function delete(Request $request, Author $author, EntityManagerInterface $entityManager): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$author->getId(), $request->request->get('_token'))) {
+            $entityManager->remove($author);
+            $entityManager->flush();
+        }
+    
+        return $this->redirectToRoute('author_index');
     }
 }
+
+
+
+?>
