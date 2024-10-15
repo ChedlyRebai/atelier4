@@ -57,17 +57,7 @@ class BookController extends AbstractController
         ]);
     }
 
-    #[Route('/', name: 'author_index', methods: ['GET'])]
-    public function index(AuthorRepository authorRepository): Response {
-        console.log('Fetching all authors');
-        return this->render('author/index.html.twig', [
-            'authors' => authorRepository->findAll(),
-        ]);
-    }
 
-
-
-    
     #[Route('/{id}/edit',name:'book_edit',methods:['GET','POST'])]
     public function edit(Request $request,Book $book,EntityManagerInterface $entitymanager):Response {
         if($request->isMethod('POST')){
