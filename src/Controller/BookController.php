@@ -57,15 +57,29 @@ class BookController extends AbstractController
         ]);
     }
 
+
     #[Route('/{id}/edit',name:'book_edit',methods:['GET','POST'])]
     public function edit(Request $request,Book $book,EntityManagerInterface $entitymanager):Response {
-        if($request-> isMethod('POST')){
-            $book->setTitle($request->request->get("title"));
+        if($request->isMethod('POST')){
+            $book->setTitle($request->request->get('title'));
+            $publishedDate = $request->request->get('published_date');
+            if ($publishedDate) {
+                $book->setPublicationDate(new \DateTime($publishedDate));
+            } else {
+                throw new \Exception('Published date is required');
+            }
+            $book->setEnabled($request->request->get('enabled'));
+            $author = $entitymanager->getRepository(Author::class)->find($request->request->get('author'));
+            $author->setNbBooks($author->getNbBooks() + 1);
+            $book->setAuthor($author);
+            
             $entitymanager->flush();
+            
             return $this->redirectToRoute('book_index');
         }
         return $this->render('book/edit.html.twig',[
             'book'=>$book,
+            'authors'=>$entitymanager->getRepository(Author::class)->findAll(),
         ]);
     }
 
@@ -76,7 +90,7 @@ class BookController extends AbstractController
 
             $author = $book->getAuthor();
             $author->setNbBooks($author->getNbBooks() - 1);
-
+            
          
 
             $entitymanager->remove($book);
