@@ -12,6 +12,7 @@
                 <th>Username</th>
                 <th>Email</th>
                 <th>Actions</th>
+                <th>nb books </th>
             </tr>
         </thead>
         <tbody>
@@ -28,6 +29,9 @@
                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ author.id) }}">
                         <button class="btn btn-danger">delete</button>
                     </form>
+                </td>
+                <td> 
+                    {{ author.nbBooks | number_format(0, '.', ',') }}
                 </td>
             </tr>
         {% endfor %}

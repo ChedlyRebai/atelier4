@@ -9,6 +9,7 @@ use App\Entity\Book;
 use App\Entity\Author;
 use App\Form\BookType;
 use App\Repository\BookRepository;
+use App\Repository\AuthorRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,9 +28,10 @@ class BookController extends AbstractController
     }
 
     #[Route('/new',name:'book_new',methods:['GET','POST'])]
-    public function new(Request $request,EntityManagerInterface $entitymanager):Response {
+    public function new(AuthorRepository $authorepo, Request $request,EntityManagerInterface $entitymanager):Response {
         if($request->isMethod('POST')){
             $book = new Book();
+            
             $book->setTitle($request->request->get('title'));
             $publishedDate = $request->request->get('published_date');
             if ($publishedDate) {
@@ -37,6 +39,7 @@ class BookController extends AbstractController
             } else {
                 throw new \Exception('Published date is required');
             }
+
             //$book->setPublicationDate($request->request->get('published_date'));
             $book->setEnabled($request->request->get('enabled'));
             $author = $entitymanager->getRepository(Author::class)->find($request->request->get('author'));
@@ -48,7 +51,9 @@ class BookController extends AbstractController
             
             return $this->redirectToRoute('book_index');
         }
-        return $this->render('book/new.html.twig');
+        return $this->render('book/new.html.twig',[
+            'authors'=>$authorepo->findAll(),
+        ]);
     }
 
     #[Route('/{id}/edit',name:'book_edit',methods:['GET','POST'])]

@@ -13,8 +13,16 @@
     <input type="text" id="title" name="title" required>
 </div>
 <div>
-    <label for="author">Author:</label>
-    <input type="number" id="author" name="author" required>
+  
+    <div>
+        <label for="author">author:</label>
+        <select id="author" name="author" required>
+        {% for author in authors %}
+                <option value={{author.id}}>{{author.username}}</option>
+        {% endfor %}
+           
+        </select>
+    </div>
 </div>
 <div>
     <label for="enabled">Enabled:</label>
