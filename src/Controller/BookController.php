@@ -6,6 +6,7 @@ namespace App\Controller;
 namespace App\Controller;
 
 use App\Entity\Book;
+use App\Entity\Author;
 use App\Form\BookType;
 use App\Repository\BookRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -30,9 +31,18 @@ class BookController extends AbstractController
         if($request->isMethod('POST')){
             $book = new Book();
             $book->setTitle($request->request->get('title'));
-            $book->setPublicationDate($request->request->get('published_date'));
+            $publishedDate = $request->request->get('published_date');
+            if ($publishedDate) {
+                $book->setPublicationDate(new \DateTime($publishedDate));
+            } else {
+                throw new \Exception('Published date is required');
+            }
+            //$book->setPublicationDate($request->request->get('published_date'));
             $book->setEnabled($request->request->get('enabled'));
-            $book->setAuthor($request->request->get('author'));
+            $author = $entitymanager->getRepository(Author::class)->find($request->request->get('author'));
+            $book->setAuthor($author);
+
+            
             $entitymanager->persist($book);
             $entitymanager->flush();
             

@@ -16,8 +16,8 @@ class Book
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
-    #[ORM\Column(type: "datetime")]
-    private ?\DateTimeInterface $date = null;
+    #[ORM\Column(type: 'datetime')]
+    private $publicationDate;
 
     #[ORM\Column(length: 255)]
     private ?string $enabled = null;
@@ -42,14 +42,15 @@ class Book
         return $this;
     }
 
-    public function getPublicationDate(): ?string
+    public function getPublicationDate(): ?\DateTimeInterface
     {
         return $this->publicationDate;
     }
 
-    public function setPublicationDate(string $publicationDate): static
+    public function setPublicationDate(\DateTimeInterface $publicationDate): self
     {
         $this->publicationDate = $publicationDate;
+
         return $this;
     }
 
