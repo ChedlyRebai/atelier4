@@ -27,10 +27,18 @@ class BookController extends AbstractController
 
     #[Route('/new',name:'book_new',methods:['GET','POST'])]
     public function new(Request $request,EntityManagerInterface $entitymanager):Response {
-        if($request-> isMethod('POST')){
-            $book=new Book();
-            $book->setTitle($request->request->get("title"));
+        if($request->isMethod('POST')){
+            $book = new Book();
+            $book->setTitle($request->request->get('title'));
+            $book->setPublicationDate($request->request->get('published_date'));
+            $book->setEnabled($request->request->get('enabled'));
+            $book->setAuthor($request->request->get('author'));
+            $entitymanager->persist($book);
+            $entitymanager->flush();
+            
+            return $this->redirectToRoute('book_index');
         }
+        return $this->render('book/new.html.twig');
     }
 
     #[Route('/{id}/edit',name:'book_edit',methods:['GET','POST'])]
@@ -61,7 +69,7 @@ class BookController extends AbstractController
         ]);
     }
 
-    
+
 
 
 }
