@@ -84,6 +84,12 @@ class Author
         return $this->books;
     }
 
+    public function __toString(): string
+{
+    return $this->getUsername() . ' (' . $this->getEmail() . ')';
+}
+
+
     public function addBook(book $book): static
     {
         if (!$this->books->contains($book)) {
