@@ -72,6 +72,8 @@ class BookController extends AbstractController
         return $this->redirectToRoute('book_index');
     }
 
+
+
     #[Route('/{id}',name:'book_show',methods:['GET'])]
     public function show(Book $book):Response {
         return $this->render('book/show.html.twig',[
