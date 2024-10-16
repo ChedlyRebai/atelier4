@@ -15,6 +15,7 @@ class AuthorType extends AbstractType
             ->add('username')
             ->add('email')
             ->add('nbBooks')
+            ->add('save', SubmitType::class)
         ;
     }
 
