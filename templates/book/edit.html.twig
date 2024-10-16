@@ -22,7 +22,8 @@
             <label for="author">Author</label>
             <select id="author" name="author" required>
                 {% for author in authors %}
-                    <option value="{{ author.id }}" {% if author.id == book.author.id %}selected{% endif %}>{{ author.username }}</option>
+                    <option value="{{ author.id }}" {% if author.id == book.author.id %}selected{% endif %}>
+                    {{ author.username }}</option>
                 {% endfor %}
             </select>
         </div>
