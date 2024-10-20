@@ -61,7 +61,6 @@ public function edit(Request $request, Author $author, EntityManagerInterface $e
 
     if ($form->isSubmitted() && $form->isValid()) {
         $entityManager->flush();
-
         return $this->redirectToRoute('author_index');
     }
 

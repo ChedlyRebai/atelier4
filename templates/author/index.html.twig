@@ -12,7 +12,6 @@
                 <th>Username</th>
                 <th>Email</th>
                 <th>Actions</th>
-                <th>nb books </th>
             </tr>
         </thead>
         <tbody>
@@ -24,19 +23,15 @@
                 <td>
 
                     <a href="{{ path('author_edit', {'id': author.id}) }}">edit</a>
-                    <a href="{{path('author_edit' , {'id':author.id})}} > </a>
                     <form method="post" action="{{ path('author_delete', {'id': author.id}) }}" style="display:inline-block;">
                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ author.id) }}">
                         <button class="btn btn-danger">delete</button>
                     </form>
                 </td>
-                <td> 
-                    {{ author.nbBooks | number_format(0, '.', ',') }}
-                </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-    <a href="{{ path('book_index') }}">Books</a>
+
     <a href="{{ path('author_new') }}">Create new</a>
 {% endblock %}
