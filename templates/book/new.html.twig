@@ -1,40 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello BookController!{% endblock %}
+{% block title %}Create new Book{% endblock %}
 
 {% block body %}
+    <h1>Create new Book</h1>
 
-<h1>new Book</h1>
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button type="submit">Save</button>
+    {{ form_end(form) }}
 
-<form method='post'>
-
-<div>
-    <label for="title">Title:</label>
-    <input type="text" id="title" name="title" required>
-</div>
-<div>
-  
-    <div>
-        <label for="author">author:</label>
-        <select id="author" name="author" required>
-        {% for author in authors %}
-                <option value={{author.id}}>{{author.username}}</option>
-        {% endfor %}
-           
-        </select>
-    </div>
-</div>
-<div>
-    <label for="enabled">Enabled:</label>
-    <input type="text" id="enabled" name="enabled" required>
-</div>
-<div>
-    <label for="published_date">Published Date:</label>
-    <input type="date" id="published_date" name="published_date" required>
-</div>
-<div>
-    <button type="submit">Save</button>
-</div>
-</form>
-
+    <a href="{{ path('book_index') }}">Back to list</a>
 {% endblock %}
