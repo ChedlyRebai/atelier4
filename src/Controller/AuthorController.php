@@ -27,16 +27,7 @@ class AuthorController extends AbstractController
     #[Route('/new', name: 'author_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
-        /*if ($request->isMethod('POST')) {
-            $author = new Author();
-            $author->setUsername($request->request->get('username'));
-            $author->setEmail($request->request->get('email'));
-    
-            $entityManager->persist($author);
-            $entityManager->flush();
-    
-            return $this->redirectToRoute('author_index');
-        }*/
+        
         $author = new Author();
         $form = $this->createForm(AuthorType::class, $author);
         $form->handleRequest($request);
