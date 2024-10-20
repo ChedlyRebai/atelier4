@@ -14,7 +14,6 @@ class AuthorType extends AbstractType
         $builder
             ->add('username')
             ->add('email')
-            
             ->add('save', SubmitType::class)
         ;
     }
