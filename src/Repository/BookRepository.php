@@ -31,6 +31,21 @@ class BookRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
+    public function findByDateRange(\DateTimeInterface $startDate, \DateTimeInterface $endDate): array
+{
+    $entityManager = $this->getEntityManager();
+
+    $query = $entityManager->createQuery(
+        'SELECT b FROM App\Entity\Book b WHERE b.publicationDate BETWEEN :startDate AND :endDate ORDER BY b.publicationDate ASC'
+    )
+    ->setParameter('startDate', $startDate)
+    ->setParameter('endDate', $endDate);
+
+    return $query->getResult();
+}
+
+
+
     //    /**
     //     * @return Book[] Returns an array of Book objects
     //     */

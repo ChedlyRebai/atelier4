@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Filtered Books{% endblock %}
+
+{% block body %}
+    <h1>Filtered Books from {{ startDate|date('Y-m-d') }} to {{ endDate|date('Y-m-d') }}</h1>
+
+    {% if books is not empty %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Publication Date</th>
+                    <th>Author</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for book in books %}
+                    <tr>
+                        <td>{{ book.title }}</td>
+                        <td>{{ book.publicationDate|date('Y-m-d') }}</td>
+                        <td>{{ book.author.username }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No books found for the selected date range.</p>
+    {% endif %}
+
+    <a href="{{ path('book_filter') }}">Back to filter</a>
+{% endblock %}
