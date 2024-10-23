@@ -9,7 +9,7 @@
 <ul>
    
     {% for book in books %}
-    <li>{{book.id}} {{book.title}} by {{book.Author}} 
+    <li>{{book.id}} {{book.publicationDate | date('Y-m-d')  }} {{book.title}} by {{book.Author}} 
     <form method="post" action="{{ path('book_delete', {'id': book.id}) }}" style="display:inline-block;">
                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ book.id) }}">
                         <button class="btn btn-danger">delete</button>

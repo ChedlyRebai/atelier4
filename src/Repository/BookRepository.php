@@ -16,6 +16,21 @@ class BookRepository extends ServiceEntityRepository
         parent::__construct($registry, Book::class);
     }
 
+
+    /**
+     * @return Book[] 
+     */
+    public function findAllOrderedByPublicationDate(): array
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT b FROM App\Entity\Book b ORDER BY b.publicationDate ASC'
+        );
+
+        return $query->getResult();
+    }
+
     //    /**
     //     * @return Book[] Returns an array of Book objects
     //     */
@@ -30,6 +45,7 @@ class BookRepository extends ServiceEntityRepository
     //            ->getResult()
     //        ;
     //    }
+
 
     //    public function findOneBySomeField($value): ?Book
     //    {

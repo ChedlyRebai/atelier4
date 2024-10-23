@@ -20,10 +20,12 @@ class BookType extends AbstractType
                 'widget' => 'single_text',
             ])
             ->add('enabled')
+
             ->add('author', EntityType::class, [
                 'class' => Author::class,
                 'choice_label' => 'username',
             ])
+            
             ->add('save', SubmitType::class)
         ;
     }

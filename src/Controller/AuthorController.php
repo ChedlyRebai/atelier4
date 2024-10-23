@@ -1,11 +1,9 @@
 <?php
 
 namespace App\Controller;
-
 use App\Entity\Author;
 use App\Entity\Book;
 use App\Form\AuthorType;
-
 use App\Repository\AuthorRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -27,13 +25,14 @@ class AuthorController extends AbstractController
     #[Route('/new', name: 'author_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
-        
         $author = new Author();
         $form = $this->createForm(AuthorType::class, $author);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             $entityManager->persist($author);
+
             $entityManager->flush();
 
          return $this->redirectToRoute('author_index');
@@ -45,20 +44,20 @@ class AuthorController extends AbstractController
     }
     
     #[Route('/{id}/edit', name: 'author_edit', methods: ['GET', 'POST'])]
-public function edit(Request $request, Author $author, EntityManagerInterface $entityManager): Response
-{
-    $form = $this->createForm(AuthorType::class, $author);
-    $form->handleRequest($request);
+    public function edit(Request $request, Author $author, EntityManagerInterface $entityManager): Response
+    {
+        $form = $this->createForm(AuthorType::class, $author);
+        $form->handleRequest($request);
 
-    if ($form->isSubmitted() && $form->isValid()) {
-        $entityManager->flush();
-        return $this->redirectToRoute('author_index');
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+            return $this->redirectToRoute('author_index');
+        }
+
+        return $this->render('author/edit.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
-
-    return $this->render('author/edit.html.twig', [
-        'form' => $form->createView(),
-    ]);
-}
     
     #[Route('/{id}', name: 'author_delete', methods: ['POST'])]
     public function delete(Request $request, Author $author, EntityManagerInterface $entityManager): Response

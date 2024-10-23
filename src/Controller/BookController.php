@@ -19,6 +19,15 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/book')]
 class BookController extends AbstractController
 {
+
+    #[Route('/ordered', name: 'book_ordered', methods: ['GET'])]
+    public function ordered(BookRepository $bookrepo): Response
+    {
+        return $this->render('book/index.html.twig', [
+            'books' => $bookrepo->findAllOrderedByPublicationDate(),
+        ]);
+    }
+    
     #[Route('/', name: 'book_index', methods: ['GET'])]
     public function index(BookRepository $bookrepo): Response
     {
