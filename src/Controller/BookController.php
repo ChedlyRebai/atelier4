@@ -20,6 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class BookController extends AbstractController
 {
 
+    // Exerice: order by date
     #[Route('/ordered', name: 'book_ordered', methods: ['GET'])]
     public function ordered(BookRepository $bookrepo): Response
     {
@@ -27,7 +28,8 @@ class BookController extends AbstractController
             'books' => $bookrepo->findAllOrderedByPublicationDate(),
         ]);
     }
-    
+
+
     #[Route('/', name: 'book_index', methods: ['GET'])]
     public function index(BookRepository $bookrepo): Response
     {
